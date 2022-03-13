@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    container_name: movies-pg
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+    environment:
+      POSTGRES_PASSWORD: bitlyuf
+      POSTGRES_DB: movies
+
+  movies-api:
+    build: .
+    image: marioj/movies-api
+    container_name: movies-api
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+
+networks:
+  app-network:
